@@ -1,0 +1,56 @@
+services:
+  llama-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: platform-llama
+    ports:
+      - "8081:8081"
+    volumes:
+      # Mount host model storage directory as read-only inside the container
+      - /opt/models:/models:ro
+    environment:
+      # Path to the model file inside the container (mounted via volume)
+      - MODEL_PATH=/models/Qwen2.5-0.5B-Instruct-Q4_K_M.gguf
+      # host and port bindings inside the container
+      - LLAMA_HOST=0.0.0.0
+      - LLAMA_PORT=8081
+      # Optional: Add any extra arguments for llama-server (e.g., "-c 2048 -t 4")
+      - LLAMA_EXTRA_ARGS=
+    healthcheck:
+      # Query the public /health endpoint.
+      # Curl -f returns status 0 (healthy) on HTTP 200, and non-zero (unhealthy) on HTTP 503 (loading) or other errors.
+      test: ["CMD", "curl", "-f", "http://localhost:8081/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      # Give the model ample time to load initially before failing health checks
+      start_period: 30s
+    restart: unless-stopped
+    
+    # Production security hardening
+    read_only: true
+    tmpfs:
+      - /tmp:mode=1777,size=16m
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+
+    # Production resource limits (adjust to match target CPU/RAM allocations)
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: '4.0'
+    #       memory: 4096M
+    #     reservations:
+    #       cpus: '2.0'
+    #       memory: 2048M
+
+    networks:
+      - inference-network
+
+networks:
+  inference-network:
+    name: inference-network
+    driver: bridge

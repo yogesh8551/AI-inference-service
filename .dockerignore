@@ -1,22 +1,10 @@
-*.o
-*.a
-.cache/
-# Do not ignore .git directory, otherwise the reported build number will always be 0
-.github/
-.gitignore
-.vs/
-.vscode/
-.DS_Store
+# Ignore everything by default to keep the build context minimal (~0 bytes)
+*
 
-build*/
+# Allow the build directory and all its contents
+!build/
+!build/**
 
-tools/ui/node_modules/
-
-models/*
-
-/llama-cli
-/llama-quantize
-
-arm_neon.h
-compile_commands.json
-Dockerfile
+# Allow entrypoint script and Dockerfile
+!entrypoint.sh
+!Dockerfile
