@@ -1,7 +1,7 @@
 # ==============================================================================
 # Stage 1: Build Context & Shared Library Helper
 # ==============================================================================
-FROM ubuntu:24.04 AS builder
+FROM ubuntu:26.04 AS builder
 
 # Copy the build directory from host to helper stage
 COPY build /build
@@ -19,7 +19,7 @@ RUN mkdir -p /dist/bin /dist/lib && \
 # ==============================================================================
 # Stage 2: Minimal Production Runtime
 # ==============================================================================
-FROM ubuntu:24.04
+FROM ubuntu:26.04
 
 # Prevent interactive prompts during package installation
 ENV DEBIAN_FRONTEND=noninteractive
