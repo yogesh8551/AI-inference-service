@@ -1,35 +1,17 @@
-# Ignore heavy repository folders to keep the build context small
+# Ignore Git metadata
 .git/
 .github/
 .gitignore
 .gitmodules
 
-# Ignore models directory to prevent copying large GGUF models into the build context
+# Ignore GGUF models (if any are stored in the project folder)
 models/
 
-# Ignore source code folders and tests (not needed for runtime binary deployment)
-src/
-common/
-examples/
-tests/
-docs/
-vendor/
-pocs/
-ci/
-cmake/
-benches/
-app/
-
-# Ignore IDE and OS metadata
+# Ignore IDE and OS temporary configurations
 .vs/
 .vscode/
 .idea/
 .cache/
 .DS_Store
-
-# Ignore intermediate compile files
-*.o
-*.a
-*.d
 *.pyc
 __pycache__/

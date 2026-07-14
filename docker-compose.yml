@@ -1,8 +1,8 @@
 services:
   llama-server:
     build:
-      context: /opt/llama.cpp
-      dockerfile: /home/ubuntu/AI-inference-service/Dockerfile
+      context: .
+      dockerfile: Dockerfile
     container_name: platform-llama
     ports:
       - "8081:8081"
